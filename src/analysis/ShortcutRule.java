@@ -22,7 +22,7 @@ public class ShortcutRule implements Rule {
                 String code = keyEvent.getKeyCode().toUpperCase();
 
                 // ১. Blacklisted Keys চেক করা
-                if (code.equals("PRINTSCREEN") || code.equals("WINDOWS") || code.equals("META")) {
+                if (code.equals("PRTSC") || code.equals("WINDOWS") || code.equals("META")) {
                     System.out.println("Flagged: Forbidden Key (" + code + ") pressed!");
                     return true;
                 }
