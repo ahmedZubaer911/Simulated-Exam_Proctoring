@@ -1,4 +1,4 @@
-public enum EventType{
+enum EventType{
     MOUSE,
     KEYBOARD,
     FOCUS,
