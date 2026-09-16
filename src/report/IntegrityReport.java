@@ -29,7 +29,7 @@ public class IntegrityReport {
         return Math.min(score, 100.0); // ম্যাক্সিমাম স্কোর ১০০ এর বেশি হবে না
     }
 
-    // লজিক: স্কোরের ওপর ভিত্তি করে Risk Level সেট করা
+    
     private RiskLevel classifyRiskLevel() {
         if (riskScore == 0) return RiskLevel.LOW;
         if (riskScore <= 50) return RiskLevel.MEDIUM;

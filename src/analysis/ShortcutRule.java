@@ -13,6 +13,7 @@ public class ShortcutRule implements Rule {
         if (events == null || events.isEmpty()) return false;
 
         boolean isCtrlPressed = false;
+        boolean isAltPressed = false;
 
         for (Event event : events) {
             if (event instanceof KeyEvent) {
@@ -20,26 +21,35 @@ public class ShortcutRule implements Rule {
                 // সব কীকোড বড় হাতের অক্ষরে কনভার্ট করে নিচ্ছি যেন মেলাতে সুবিধা হয়
                 String code = keyEvent.getKeyCode().toUpperCase();
 
-                // ১. Blacklisted Keys চেক করা (Windows, PrintScreen)
+                // ১. Blacklisted Keys চেক করা
                 if (code.equals("PRINTSCREEN") || code.equals("WINDOWS") || code.equals("META")) {
                     System.out.println("Flagged: Forbidden Key (" + code + ") pressed!");
                     return true;
                 }
 
-                // Modifier key (Ctrl) ট্র্যাক করা
+                // Modifier keys ট্র্যাক করা
                 if (code.equals("CTRL")) {
                     isCtrlPressed = true;
                     continue; // Ctrl পেলেও পরের ইভেন্টের জন্য অপেক্ষা করব
+                } else if (code.equals("ALT")) {
+                    isAltPressed = true;
+                    continue;
                 }
 
-                // ২. Forbidden Combinations চেক করা (Ctrl + C / Ctrl + V / Ctrl + A)
+                // ২. Forbidden Combinations চেক করা (Ctrl + C / Ctrl + V / Alt + Tab)
                 if (isCtrlPressed && (code.equals("C") || code.equals("V") || code.equals("A"))) {
                     System.out.println("Flagged: Copy/Paste Shortcut Used (Ctrl + " + code + ")");
                     return true;
                 }
 
-                // যদি অন্য কোনো নরমাল বাটন প্রেস করে, তবে Ctrl এর স্টেট রিসেট করে দিব
+                if (isAltPressed && code.equals("TAB")) {
+                    System.out.println("Flagged: Window Switch Shortcut Used (Alt + Tab)");
+                    return true;
+                }
+
+                // যদি অন্য কোনো নরমাল বাটন প্রেস করে, তবে Modifier স্টেট রিসেট করে দিব
                 isCtrlPressed = false;
+                isAltPressed = false;
             }
         }
 
